@@ -71,6 +71,7 @@ module.exports = {
             i++;
 
             var highest = 0;
+            var tmp = word;
             for (var val in dict[word]) {
                 if (dict[word].hasOwnProperty(val)) {
                     // var items = Object.keys(dict[word]).map(function(key) {
@@ -79,14 +80,15 @@ module.exports = {
                     // items.sort(function(first, second) {
                     //     return second[1] - first[1];
                     // });
-                    // word = items[0][0];
+                    // word = items[0][0];)
                     word = pickRandom(dict[word]);
                 }
             }
 
-            if (typeof word == 'undefined') {
-                break;
+            if (typeof word == 'undefined' || word == tmp) {
+                return sentence;
             }
+            tmp = word;
             sentence = sentence + ' ' + word;
         }
         sentence = sentence + ".";

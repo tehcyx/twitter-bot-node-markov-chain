@@ -15,7 +15,8 @@ var client = new Twitter({
 });
 
 var dictionary = markov.trainFromFolder('training');
-//var dictionary = markov.trainFromFile('training/shakespeare_rape_of_lucrece.txt');
+// var dictionary = markov.trainFromFile('training/testfile.txt');
+console.log(dictionary);
 
 function runLogic(sources) {
     if(typeof sources == 'undefined') {
