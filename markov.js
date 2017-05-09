@@ -59,12 +59,12 @@ module.exports = {
     generate: function(dict, maxLength = 0, startWord = '') {
         var word;
         if (startWord == '') {
-            word = pickRandom(dict, true);
+            word = pickRandom(dict);
         } else {
             word = startWord;
         }
 
-        sentence = word.charAt(0).toUpperCase() + word.slice(1);
+        sentence = word.charAt(0).toUpperCase() + word.slice(1); // make first letter always capital and add the word to the sentence
 
         var i = 0;
         while (maxLength == 0 || i < maxLength) {
