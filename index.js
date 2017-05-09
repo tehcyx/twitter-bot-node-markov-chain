@@ -16,7 +16,7 @@ var client = new Twitter({
 
 var dictionary = markov.trainFromFolder('training');
 // var dictionary = markov.trainFromFile('training/testfile.txt');
-console.log(dictionary);
+// console.log(dictionary);
 
 function runLogic(sources) {
     if(typeof sources == 'undefined') {
@@ -30,7 +30,13 @@ function runLogic(sources) {
     //
     // console.log('Pretending to be in lat: ' + rand_lat + ', long: ' + rand_lon);
 
+    // dictionary = markov.adjustFactors(dictionary);
+
+    dictionary = markov.bulkAdjustFactors(dictionary, 10000, [this.fitnessFunc]);
+
     var message = markov.generate(dictionary, 10);
+
+    message = message.charAt(0).toUpperCase() + message.slice(1); // make first letter capitalized.
 
     console.log(message);
 

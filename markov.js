@@ -64,10 +64,10 @@ module.exports = {
             word = startWord;
         }
 
-        sentence = word.charAt(0).toUpperCase() + word.slice(1); // make first letter always capital and add the word to the sentence
+        sentence = word;
 
         var i = 0;
-        while (maxLength == 0 || i < maxLength) {
+        while (maxLength == 0 || i < maxLength - 1) {
             i++;
 
             var highest = 0;
@@ -91,9 +91,50 @@ module.exports = {
             tmp = word;
             sentence = sentence + ' ' + word;
         }
-        sentence = sentence + ".";
         return sentence;
+    },
+
+    adjustFactors: function(dict, maxLength = 2, f = fitnessFunc) {
+        var extract = this.generate(dict, maxLength).split(' ');
+
+        var pairs = [];
+        for (var i = 0; i < extract.length; i++) {
+            if (typeof extract[i + 1] == 'undefined') {
+                continue;
+            }
+            pairs[i] = [extract[i], extract[i + 1]];
+        }
+
+        for (var p in pairs) {
+            var fact = (f(dict, pairs[p]) - 0.5) * 2;
+
+            dict = mergeDict(this.train(pairs[p][0] + " " + pairs[p][1], fact), dict);
+        }
+        return dict;
+    },
+
+    bulkAdjustFactors: function(dict, iterations = 1, f = [ undefined ]) {
+        if (typeof f == 'undefined' || typeof f[0] == 'undefined') {
+            return dict;
+        }
+        for (var i = 0; i < iterations; i++) {
+            for (var j = 0; j < f.length; j++) {
+                dict = this.adjustFactors(dict, 10, f[j]);
+            }
+        }
+
+        return dict;
     }
+}
+
+function fitnessFunc(dict, pair) {
+    if (typeof pair[1] == 'undefined') {
+        return -1;
+    }
+    if (typeof dict[pair[0]] == 'undefined') {
+        return -1;
+    }
+    return dict[pair[0]][pair[1]];
 }
 
 function mergeDict(dict1, dict2) {
