@@ -57,8 +57,6 @@ module.exports = {
     },
 
     generate: function(dict, maxLength = 0, startWord = '') {
-        // Start with a given word, or randomize one that exists already.
-        // word = start_with if start_with is not None else random.choice([key for key in self.tree])
         var word;
         if (startWord == '') {
             word = pickRandom(dict, true);
@@ -72,13 +70,6 @@ module.exports = {
         while (maxLength == 0 || i < maxLength) {
             i++;
 
-            // # Otherwise, randomize against the weight of each leaf word divided by the number of leaves.
-            // dist = sorted([(w, rand(self.tree[word][w] / len(self.tree[word]))) for w in self.tree[word]],
-            //               # And sort the result in decreasing order.
-            //               key=lambda k: 1-k[1])
-            // # And yield the highest scoring word
-            // word = dist[0][0]
-            // yield word
             var highest = 0;
             for (var val in dict[word]) {
                 if (dict[word].hasOwnProperty(val)) {
