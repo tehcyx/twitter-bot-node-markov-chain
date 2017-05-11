@@ -2,7 +2,7 @@ var CronJob = require('cron').CronJob;
 var Twitter = require('twitter');
 var markov = require('./markov.js');
 
-new CronJob('*/5 * * * * *', function() {
+new CronJob('*/5 * * * *', function() {
     runLogic();
 }, null, true, 'America/Los_Angeles');
 
@@ -23,12 +23,12 @@ function runLogic(sources) {
         // if no topic is defined, maybe tweet about a trending topic
         source = ["_danielroth"]
     }
-    // var rand_lat = (Math.random() * (180.000000 - 0.000000) + 0.000000);
-    // rand_lat = (rand_lat - 90.000000).toFixed(6);
-    // var rand_lon = (Math.random() * (360.000000 - 0.000000) + 0.000000);
-    // rand_lon = (rand_lon - 180.000000).toFixed(6);
-    //
-    // console.log('Pretending to be in lat: ' + rand_lat + ', long: ' + rand_lon);
+    var rand_lat = (Math.random() * (180.000000 - 0.000000) + 0.000000);
+    rand_lat = (rand_lat - 90.000000).toFixed(6);
+    var rand_lon = (Math.random() * (360.000000 - 0.000000) + 0.000000);
+    rand_lon = (rand_lon - 180.000000).toFixed(6);
+
+    console.log('Pretending to be in lat: ' + rand_lat + ', long: ' + rand_lon);
 
     // dictionary = markov.adjustFactors(dictionary);
 
@@ -40,8 +40,10 @@ function runLogic(sources) {
 
     console.log(message);
 
-    // var params_tweet = { status: message, lat: rand_lat, long: rand_lon };
-    //client.post('statuses/update', params_tweet, handleTweet);
+    message = message + "\n - tweet made up by bot: https://goo.gl/nZuYjr";
+
+    var params_tweet = { status: message, lat: rand_lat, long: rand_lon };
+    client.post('statuses/update', params_tweet, handleTweet);
 }
 
 function handleTweet(error, result, response) {
